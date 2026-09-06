@@ -60,8 +60,5 @@ with st.container(border = True):
  with col2:
     st.success("⚡ Difficulty\n\n**Medium**")
 
-
-
-st.button("⚠️ ALERTS")
-if st.button == "⚠️ ALERTS":
+if st.button("⚠️ ALERTS", key="alerts_button"):
     st.switch_page("pages/alerts.py")
