@@ -126,18 +126,3 @@ print("f1 score :",f1*100)
 
 # Add predicted performance to dataset
 df["predicted_performance"]=model.predict(df[features])
-
-# Save output backend
-output = df[
-    [
-        "patient_id",
-        "date",
-        "performance_score",
-        "performance_level",
-        "predicted_performance"
-    ]
-]
-
-output.to_csv("model_predictions.csv", index=False)
-
-print("M1 prediction output saved successfully.")

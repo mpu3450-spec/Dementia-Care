@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-
+import pandas as pd
+from pathlib import Path
 from backend.database import get_connection, create_tables
 
 
@@ -304,4 +305,36 @@ def get_localization(language: str):
     return {
         "language": language,
         "content": content[language]
+    }
+
+# ---------------- M1 AI PERFORMANCE ----------------
+
+@app.get("/ai-performance/{patient_id}")
+def get_ai_performance(patient_id: str):
+
+    file_path = Path(__file__).resolve().parent.parent / "model train" / "model_predictions.csv"
+
+    if not file_path.exists():
+        return {
+            "message": "M1 prediction file not found"
+        }
+
+    df = pd.read_csv(file_path)
+
+    patient_data = df[
+        df["patient_id"] == patient_id
+    ]
+
+    if patient_data.empty:
+        return {
+            "message": "No M1 prediction found for this patient"
+        }
+
+    latest = patient_data.iloc[-1]
+
+    return {
+        "patient_id": patient_id,
+        "performance_score": round(float(latest["performance_score"]), 2),
+        "performance_level": latest["performance_level"],
+        "predicted_performance": latest["predicted_performance"]
     }
