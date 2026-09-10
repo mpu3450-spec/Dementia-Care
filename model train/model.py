@@ -1,5 +1,5 @@
 import pandas as pd
-df= pd.read_csv("game_results.csv")
+df= pd.read_csv("model train/game_results.csv")
 # print the used dataset
 print("Original dataset")
 print(df.head())
@@ -126,3 +126,15 @@ print("f1 score :",f1*100)
 
 # Add predicted performance to dataset
 df["predicted_performance"]=model.predict(df[features])
+
+output = df[["patient_id",
+        "date",
+        "performance_score",
+        "performance_level",
+        "predicted_performance"
+    ]
+]
+
+# Create csv file of outputs
+output.to_csv("model_predictions.csv", index=False)
+print("M1 prediction output saved successfully.")
